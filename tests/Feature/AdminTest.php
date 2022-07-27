@@ -340,16 +340,18 @@ function assertCanSeeTheUserOverview()
         ->see('Frederick Vanbrabant');
 }
 
-it('assert can ban users', function () {
-    $this->loginAsAdmin();
+function assertCanBanUsers()
+{
+
     $user = User::factory()->create(['name' => 'Freek Murze']);
+
     test()->put('/admin/users/'.$user->username().'/ban', [
         'banned_reason' => 'test',
     ])
         ->assertRedirectedTo('/user/'.$user->username());
 
     test()->notSeeInDatabase('users', ['id' => $user->id(), 'banned_reason' => null, 'banned_at' => null]);
-});
+}
 
 function assertCanUnbanUsers()
 {
