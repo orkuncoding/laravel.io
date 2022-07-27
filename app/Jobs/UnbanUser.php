@@ -13,7 +13,7 @@ final class UnbanUser
     public function handle(): void
     {
         $this->user->banned_at = null;
-		$this->user->ban_message = null;
+		$this->user->banned_reason = null;
         $this->user->save();
     }
 }

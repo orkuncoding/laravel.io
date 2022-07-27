@@ -86,7 +86,7 @@ test('admins can delete a user', function () {
     $this->loginAsAdmin();
 
     $this->delete('/admin/users/'.$user->username())
-        ->assertRedirectedTo('/admin/users');
+        ->assertRedirectedTo('/admin');
 
     $this->notSeeInDatabase('users', ['name' => 'Freek Murze']);
 
@@ -340,15 +340,16 @@ function assertCanSeeTheUserOverview()
         ->see('Frederick Vanbrabant');
 }
 
-function assertCanBanUsers()
-{
+it('assert can ban users', function () {
+    $this->loginAsAdmin();
+    $user = User::factory()->create(['name' => 'Freek Murze']);
     test()->put('/admin/users/'.$user->username().'/ban', [
         'banned_reason' => 'test',
     ])
         ->assertRedirectedTo('/user/'.$user->username());
 
     test()->notSeeInDatabase('users', ['id' => $user->id(), 'banned_reason' => null, 'banned_at' => null]);
-}
+});
 
 function assertCanUnbanUsers()
 {
